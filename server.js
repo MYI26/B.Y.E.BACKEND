@@ -33,6 +33,9 @@ app.use('/api/transactions', transactionRoutes);    // Utilisation des routes po
 const portfolioRoutes = require('./routes/portfolioRoutes');  // Importation des routes pour le portefeuille
 app.use('/api/portfolio', portfolioRoutes);   // Utilisation des routes pour le portefeuille
 
+const aiRoutes = require('./routes/aiRoutes');  // Importation des routes pour l'IA 
+app.use('/api/ai', aiRoutes);    // Utilisation des routes pour l'IA 
+
 app.listen(PORT, () => {
   console.log(`🚀 Serveur lancé sur le port ${PORT}`);
 });

@@ -32,9 +32,20 @@ exports.createTransaction = async (req, res) => {
   }
 };
 
-exports.getUserTransactions = async (req, res) => {
+exports.getUserTransactions = async (req, res) => {     // Récupérer les transactions de l'utilisateur connecté
+  const { type } = req.query;       // Type de transaction (buy/sell) optionnel
+
+  const filter = {          // Filtre pour les transactions
+    userId: req.user.userId
+  };
+
+  // Ajoute le filtre si "type" est fourni dans l'URL
+  if (type === 'buy' || type === 'sell') {
+    filter.type = type;
+  }
+
   try {
-    const transactions = await Transaction.find({ userId: req.user.userId }).sort({ date: -1 });
+    const transactions = await Transaction.find(filter).sort({ date: -1 });     // Récupérer les transactions de l'utilisateur, triées par date décroissante
     res.json(transactions);
   } catch (err) {
     res.status(500).json({ message: 'Erreur serveur' });

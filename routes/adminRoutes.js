@@ -1,10 +1,20 @@
 const express = require('express');
-const router = express.Router();        // Création d'un routeur Express
-const authMiddleware = require('../middlewares/authMiddleware');        // Importation du middleware d'authentification
-const adminMiddleware = require('../middlewares/adminMiddleware');      // Importation du middleware d'administration   
+const router = express.Router();
+const auth = require('../middlewares/authMiddleware');
+const isAdmin = require('../middlewares/adminMiddleware');
+const {
+  getAllUsers,
+  getUserTransactions,
+  deleteUser
+} = require('../controllers/adminController');
 
-router.get('/dashboard', authMiddleware, adminMiddleware, (req, res) => {      // Route pour le tableau de bord admin, accessible uniquement aux admins
-  res.json({ message: 'Bienvenue admin !' });
-});
+// Voir tous les utilisateurs
+router.get('/users', auth, isAdmin, getAllUsers);
+
+// Voir l’historique d’un utilisateur donné
+router.get('/users/:userId/transactions', auth, isAdmin, getUserTransactions);
+
+// Supprimer un utilisateur
+router.delete('/users/:userId', auth, isAdmin, deleteUser);
 
 module.exports = router;
