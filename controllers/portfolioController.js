@@ -51,7 +51,7 @@ exports.getPortfolio = async (req, res) => {        // Récupérer le portefeuil
       const dataPrices = await respPrices.json();
       const today = dataPrices?.values?.[0];
       if (!today) {
-      return res.status(404).json({ message: 'Données de prix indisponibles' });
+      return res.status(404).json({ message: 'Price data unavailable' });
     }
       const roundedPrice = Math.round(parseFloat(today.close) * 100) / 100;
       console.log('roundedPrice', roundedPrice);
@@ -93,7 +93,7 @@ exports.getPortfolio = async (req, res) => {        // Récupérer le portefeuil
     });
 
   } catch (err) {
-    console.error('Erreur portefeuille :', err);
-    res.status(500).json({ message: 'Erreur serveur' });
+    console.error('Error analyzing portfolio:', err);
+    res.status(500).json({ message: 'Server error' });
   }
 };

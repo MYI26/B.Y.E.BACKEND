@@ -4,8 +4,8 @@ const authMiddleware = (req, res, next) => {        // Middleware pour vérifier
   const authHeader = req.headers.authorization;         // Récupère l'en-tête Authorization de la requête
 
   // Vérifie s’il y a un token dans l’en-tête Authorization
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {           
-    return res.status(401).json({ message: 'Accès refusé. Aucun token fourni.' });
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Access denied. No token provided.' });
   }
 
   const token = authHeader.split(' ')[1];
@@ -15,7 +15,7 @@ const authMiddleware = (req, res, next) => {        // Middleware pour vérifier
     req.user = decoded; // On peut récupérer req.user.userId après
     next();             // Passe à la prochaine fonction middleware ou route
   } catch (err) {
-    res.status(401).json({ message: 'Token invalide.' });
+    res.status(401).json({ message: 'Token invalid.' });
   }
 };
 

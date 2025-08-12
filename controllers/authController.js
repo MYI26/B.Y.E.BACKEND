@@ -8,7 +8,7 @@ exports.signup = async (req, res) => {          // Fonction pour l'inscription d
   try {
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: 'Email déjà utilisé' });
+    if (existingUser) return res.status(400).json({ message: 'Email already used' });
 
     // Hasher le mot de passe/ pour + de sécurité
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -19,9 +19,9 @@ exports.signup = async (req, res) => {          // Fonction pour l'inscription d
     // Créer un token
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.status(201).json({ message: 'Utilisateur créé', token });
+    res.status(201).json({ message: 'User created', token });
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur' });
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -31,17 +31,17 @@ exports.login = async (req, res) => {       // Fonction pour la connexion d'un u
   try {
     // Vérifie si l'utilisateur existe
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: 'Utilisateur non trouvé' });
+    if (!user) return res.status(400).json({ message: 'User not found' });
 
     // Compare les mots de passe
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ message: 'Mot de passe incorrect' });
+    if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
 
     // Crée un token
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.status(200).json({ message: 'Connexion réussie', token });
+    res.status(200).json({ message: 'Login successful', token });
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur' });
+    res.status(500).json({ message: 'Server error' });
   }
 };

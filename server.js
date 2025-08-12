@@ -1,13 +1,17 @@
 const express = require('express');     // Importation d'Express
 const dotenv = require('dotenv');       // Importation de dotenv pour charger les variables d'environnement/ pour + de sécurité
 const connectDB = require('./config/db');   // Importation de la fonction de connexion à la base de données MongoDB
+const cors = require('cors');
 
 dotenv.config();        // Charge les variables d'environnement
 
 const app = express();
+app.use(cors()); // <-- AVANT tes routes
+
 const PORT = process.env.PORT || 3001;
 
 app.use(express.json()); // Pour lire les JSON
+
 
 connectDB();             // Connexion MongoDB
 

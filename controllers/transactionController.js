@@ -4,7 +4,7 @@ exports.createTransaction = async (req, res) => {
   const { userId, symbol, logoUrl, type, pricePerUnit, quantity } = req.body;
 
   if (!userId || !symbol || !logoUrl || !type || !pricePerUnit || !quantity) {
-    return res.status(400).json({ message: 'Champs manquants' });
+    return res.status(400).json({ message: 'Missing fields' });
   }
 
   try {
@@ -23,12 +23,12 @@ exports.createTransaction = async (req, res) => {
     await transaction.save();
 
     res.status(201).json({
-      message: 'Transaction enregistrée',
+      message: 'Transaction recorded',
       transaction
     });
   } catch (err) {
-    console.error('Erreur transaction :', err);
-    res.status(500).json({ message: 'Erreur serveur' });
+    console.error('Error recording transaction:', err);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -48,6 +48,6 @@ exports.getUserTransactions = async (req, res) => {     // Récupérer les trans
     const transactions = await Transaction.find(filter).sort({ date: -1 });     // Récupérer les transactions de l'utilisateur, triées par date décroissante
     res.json(transactions);
   } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur' });
+    res.status(500).json({ message: 'Server error' });
   }
 };

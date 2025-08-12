@@ -47,7 +47,7 @@ exports.getStockData = async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Erreur récupération stock :', err);
+    console.error('Error recovery stock :', err);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 };

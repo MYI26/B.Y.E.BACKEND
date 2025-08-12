@@ -8,17 +8,17 @@ exports.analyzePortfolio = async (req, res) => {
     const transactions = await Transaction.find({ userId });
 
     if (transactions.length === 0) {
-      return res.status(400).json({ message: "Aucune transaction trouvée pour cet utilisateur." });
+      return res.status(400).json({ message: "No transaction found for this user." });
     }
 
     // Construction du prompt à envoyer au LLM
-    let prompt = `Voici les actions actuellement détenues par l'utilisateur, avec leurs opérations d'achat/vente :\n\n`;
+    let prompt = `Here are the shares currently held by the user, with their purchase/sale operations :\n\n`;
 
     for (const tx of transactions) {
-      prompt += `- ${tx.type.toUpperCase()} ${tx.quantity} actions de ${tx.stockSymbol} à ${tx.pricePerUnit}$ le ${new Date(tx.date).toLocaleDateString()}\n`;
+      prompt += `- ${tx.type.toUpperCase()} ${tx.quantity} shares of ${tx.stockSymbol} at ${tx.pricePerUnit}$ on ${new Date(tx.date).toLocaleDateString()}\n`;
     }
 
-    prompt += `\nAnalyse ce portefeuille du point de vue financier (performance, diversification, risques, conseils, etc) en restant factuel et pédagogique.`;
+    prompt += `\nAnalyze this portfolio from a financial perspective (performance, diversification, risks, advice, etc.) while remaining factual and educational.`;
 
     // Appel à Ollama local
     const ollamaRes = await fetch('http://localhost:11434/api/generate', {
@@ -35,7 +35,7 @@ exports.analyzePortfolio = async (req, res) => {
 
     res.json({ analysis: data.response });
   } catch (err) {
-    console.error('Erreur analyse portefeuille :', err);
-    res.status(500).json({ message: 'Erreur serveur pendant l\'analyse.' });
+    console.error('Error analyzing portfolio:', err);
+    res.status(500).json({ message: 'Server error during analysis.' });
   }
 };
